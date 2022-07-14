@@ -1,0 +1,10 @@
+package {{.package}}
+
+type {{.name}} struct {
+	gorm.Model
+}
+
+// TableName is table name in create table
+func (b *{{.name}}) TableName() string {
+	return "tb_{{.package}}s"
+}

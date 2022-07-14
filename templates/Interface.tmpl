@@ -1,0 +1,13 @@
+package {{.package}}
+
+// {{.name}}Service
+type {{.name}}Service interface {
+    Create(data {{.name}}CreateModel)
+    Delete(id string)
+}
+
+// {{.name}}Repository
+type {{.name}}Repository interface {
+    Create(data {{.name}}CreateModel)
+    Delete(id string)
+}

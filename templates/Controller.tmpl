@@ -1,0 +1,13 @@
+package {{.package}}
+
+// {{.name}}Controller use for handle framwork here and present as a controller
+type {{.name}}Controller struct {
+	{{.package}}Service {{.name}}Service
+}
+
+// New{{.name}}Controller ...
+func New{{.name}}Controller(service {{.name}}Service) *{{.name}}Controller {
+	return &{{.name}}Controller{
+		{{.package}}Controller: service,
+	}
+}

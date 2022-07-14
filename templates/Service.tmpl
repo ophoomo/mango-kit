@@ -1,0 +1,13 @@
+package {{.package}}
+
+// UseCase don't give a shit about the world!!
+type {{.package}}Service struct {
+	{{.package}}Repo {{.name}}Repository
+}
+
+// New{{.name}}Service ...
+func New{{.name}}Service(repo {{.name}}Repository) {{.name}}Service {
+	return &{{.package}}Service{
+		{{.package}}Repo: repo,
+	}
+}

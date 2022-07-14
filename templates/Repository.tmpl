@@ -1,0 +1,10 @@
+package {{.package}}
+
+type {{.package}}Repository struct {
+	conn *gorm.DB
+}
+
+// New{{.name}}Repository ...
+func New{{.name}}Repository(conn *gorm.DB) {{.name}}Repository {
+	return &{{.package}}Repository{conn}
+}

@@ -1,0 +1,13 @@
+package routes
+
+import (
+	"os"
+
+	"github.com/gin-gonic/gin"
+)
+
+// SetupRouter ...
+func SetupRouter() *gin.Engine {
+	r := gin.Default(":" + os.GetEnv("APP_PORT"))
+	return r
+}
