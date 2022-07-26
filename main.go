@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"runtime"
 	"strings"
 	"text/template"
 
@@ -77,7 +78,7 @@ func generateRes(name string) {
 		vars := make(map[string]interface{})
 		vars["name"] = strings.Title(name)
 		vars["package"] = name
-		tmpl, _ := template.ParseFiles("templates/" + s)
+		tmpl, _ := template.ParseFiles(os.Getenv("GOPATH") + "/bin/templates/" + s)
 
 		split := strings.Split(s, ".")
 		if split[len(split)-1] == "tmpl" {
@@ -89,9 +90,10 @@ func generateRes(name string) {
 
 		err := tmpl.Execute(file, vars)
 		if err != nil {
-			fmt.Printf("\033[1;31m CREATE\t\t %s \t\tError \033[0m \n", name+split[0]+".go")
+			fmt.Printf("\033[1;31m CREATE \t %30s \t Error \033[0m \n", name+split[0]+".go")
 		} else {
-			fmt.Printf("\033[1;32m CREATE\t\t %s \t\tSUCCESS \033[0m \n", name+split[0]+".go")
+			fi, _ := file.Stat()
+			fmt.Printf("\033[1;32m CREATE \t %30s \t SUCCESS \033[0m \t (%d Byte) \n", name+split[0]+".go", fi.Size())
 		}
 	}
 }
@@ -100,14 +102,34 @@ func newProject(name string) {
 	createDirectory(name)
 	createDirectory(name + "/routes")
 	createFileDefault(name)
-	fmt.Printf("\033[1;32m CREATE PROJECT\t\t %s \t\tSUCCESS \033[0m \n", name)
+	createModInit(name)
+	fmt.Printf("\033[1;32m CREATE PROJECT \t %30s \t SUCCESS \033[0m \n", name)
+}
+
+func createModInit(name string) {
+	defaultFile := []string{"gomod.tmpl"}
+	var file *os.File
+	for _, s := range defaultFile {
+		vars := make(map[string]interface{})
+		vars["name"] = name
+		vars["version"] = runtime.Version()[2:]
+		tmpl, _ := template.ParseFiles(os.Getenv("GOPATH") + "/bin/templates/" + s)
+
+		file, _ = os.Create(name + "/go.mod")
+		defer file.Close()
+
+		err := tmpl.Execute(file, vars)
+		if err != nil {
+			fmt.Printf("\033[1;31m CREATE Go mod \t %30s \t Error \033[0m \n", name)
+		}
+	}
 }
 
 func createFileDefault(directory string) {
 	defaultFile := []string{"main.tmpl", "route.tmpl", ".gitignore", "cloudbuild.yaml", "dockerfile", ".env"}
 	var file *os.File
 	for _, s := range defaultFile {
-		tmpl, _ := template.ParseFiles("templates/" + s)
+		tmpl, _ := template.ParseFiles(os.Getenv("GOPATH") + "/bin/templates/" + s)
 
 		split := strings.Split(s, ".")
 		if split[len(split)-1] == "tmpl" {

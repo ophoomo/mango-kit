@@ -8,6 +8,6 @@ import (
 
 // SetupRouter ...
 func SetupRouter() *gin.Engine {
-	r := gin.Default(":" + os.GetEnv("APP_PORT"))
+	r := gin.Default()
 	return r
 }

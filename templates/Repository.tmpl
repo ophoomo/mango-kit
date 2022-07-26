@@ -8,3 +8,15 @@ type {{.package}}Repository struct {
 func New{{.name}}Repository(conn *gorm.DB) {{.name}}Repository {
 	return &{{.package}}Repository{conn}
 }
+
+// FindAll
+func FindAll() {}
+
+// Create
+func Create(data {{.name}}CreateModel) {}
+
+// Update
+func Update() {}
+
+// Delete
+func Delete(id string) {}
