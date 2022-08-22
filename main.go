@@ -72,7 +72,8 @@ func generateCode(options string, name string) {
 }
 
 func generateRes(name string) {
-	defaultFile := []string{"Controller.tmpl", "Repository.tmpl", "Model.tmpl", "Interface.tmpl", "Service.tmpl", "Dto.tmpl"}
+	defaultFile := []string{"Controller.tmpl", "Repository.tmpl", "Model.tmpl", "Interface.tmpl", "Service.tmpl",
+		"Dto.tmpl", "GRoute.tmpl"}
 	var file *os.File
 	for _, s := range defaultFile {
 		vars := make(map[string]interface{})
@@ -82,7 +83,11 @@ func generateRes(name string) {
 
 		split := strings.Split(s, ".")
 		if split[len(split)-1] == "tmpl" {
-			file, _ = os.Create(name + "/" + name + split[0] + ".go")
+			if s == "GRoute.tmpl" {
+				file, _ = os.Create(name + "/" + name + "Route" + ".go")
+			} else {
+				file, _ = os.Create(name + "/" + name + split[0] + ".go")
+			}
 		} else {
 			file, _ = os.Create(name + "/" + s)
 		}
@@ -126,7 +131,7 @@ func createModInit(name string) {
 }
 
 func createFileDefault(directory string) {
-	defaultFile := []string{"main.tmpl", "route.tmpl", ".gitignore", "cloudbuild.yaml", "dockerfile", ".env"}
+	defaultFile := []string{"main.tmpl", "route.tmpl", ".gitignore", "cloudbuild.yaml", "dockerfile", ".env.development"}
 	var file *os.File
 	for _, s := range defaultFile {
 		tmpl, _ := template.ParseFiles(os.Getenv("GOPATH") + "/bin/templates/" + s)

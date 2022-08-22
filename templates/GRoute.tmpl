@@ -1,0 +1,16 @@
+package {{.package}}
+
+import (
+	"github.com/gofiber/fiber/v2"
+)
+
+type {{.name}}Route struct {
+	Route fiber.Router
+}
+
+func (r {{.name}}Route) New() {
+	{{.package}}Repo := {{.package}}Repository{conn: r.Conn}
+	service := {{.package}}Service{ {{.package}}Repo: &{{.package}}Repo }
+	handler := New{{.name}}Controller(&service)
+	{{.package}} := r.Route.Group("{{.package}}")
+}

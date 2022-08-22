@@ -13,13 +13,21 @@ func New{{.name}}Service(repo {{.name}}Repository) {{.name}}Service {
 }
 
 // FindAll
-func FindAll() {}
+func (s *{{.package}}Service) FindAll() error  {
+	return nil
+}
 
 // Create
-func Create(data {{.name}}CreateModel) {}
+func (s *{{.package}}Service) Create(data {{.name}}CreateModel) error  {
+	return nil
+}
 
 // Update
-func Update() {}
+func (s *{{.package}}Service) Update() error  {
+	return nil
+}
 
 // Delete
-func Delete(id string) {}
+func (s *{{.package}}Service) Delete(id string) error {
+	return nil
+}

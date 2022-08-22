@@ -2,16 +2,16 @@ package {{.package}}
 
 // {{.name}}Service
 type {{.name}}Service interface {
-    FindAll()
-    Create(data {{.name}}CreateModel)
-    Update()
-    Delete(id string)
+    FindAll() error
+    Create(data {{.name}}CreateModel) error
+    Update() error
+    Delete(id string) error
 }
 
 // {{.name}}Repository
 type {{.name}}Repository interface {
-    FindAll()
-    Create(data {{.name}}CreateModel)
-    Update()
-    Delete(id string)
+    FindAll() error
+    Create(data {{.name}}CreateModel) error
+    Update() error
+    Delete(id string) error
 }

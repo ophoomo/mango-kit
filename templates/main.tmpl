@@ -1,44 +1,33 @@
 package main
 
 import (
-	"context"
+	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"os/signal"
-	"time"
+
 	"github.com/joho/godotenv"
-	"{{.package}}/routes"
 )
 
 func main() {
-	err := godotenv.Load(".env.local", ".env")
+	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
 
-	router := routes.SetupRouter()
+	app := routes.SetupRouter()
 
-	srv := &http.Server{
-		Addr:    ":" + os.Getenv(os.Getenv("APP_PORT")),
-		Handler: router,
-	}
-
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, os.Interrupt)
 	go func() {
-		if err := srv.ListenAndServe(); err != nil {
-			log.Printf("listen: %s\n", err)
-		}
+		_ = <-c
+		fmt.Println("Gracefully shutting down...")
+		_ = app.Shutdown()
 	}()
 
-	quit := make(chan os.Signal)
-	signal.Notify(quit, os.Interrupt)
-	<-quit
-	log.Println("Shutdown Server ...")
-
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	if err := srv.Shutdown(ctx); err != nil {
-		log.Fatal("Server Shutdown:", err)
+	if err := app.Listen(":" + os.Getenv("APP_PORT")); err != nil {
+		log.Panic(err)
 	}
-	log.Println("Server exiting")
+
+	fmt.Println("Running cleanup tasks...")
 }

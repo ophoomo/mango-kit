@@ -3,11 +3,27 @@ package routes
 import (
 	"os"
 
-	"github.com/gin-gonic/gin"
-)
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/helmet/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber/v2/middleware/recover"
+ )
 
-// SetupRouter ...
-func SetupRouter() *gin.Engine {
-	r := gin.Default()
+// SetupRouter is function setup main router controller
+func SetupRouter() *fiber.App {
+	r := fiber.New(fiber.Config{
+		Prefork:       false,
+		CaseSensitive: true,
+		StrictRouting: true,
+		ServerHeader:  "{{.package}}",
+		AppName:       "{{.package}} Auth Service v" + os.Getenv("APP_VERSION"),
+	})
+	r.Use(helmet.New())
+	r.Use(logger.New(logger.Config{
+		TimeFormat: "02-Jan-2006",
+		TimeZone:   "Asia/Bangkok",
+	}))
+	r.Use(recover.New())
+
 	return r
 }

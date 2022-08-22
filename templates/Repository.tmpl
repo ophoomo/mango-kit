@@ -10,13 +10,21 @@ func New{{.name}}Repository(conn *gorm.DB) {{.name}}Repository {
 }
 
 // FindAll
-func FindAll() {}
+func (r *{{.package}}Repository) FindAll() error {
+	return nil
+}
 
 // Create
-func Create(data {{.name}}CreateModel) {}
+func (r *{{.package}}Repository) Create(data {{.name}}CreateModel) error {
+	return nil
+}
 
 // Update
-func Update() {}
+func (r *{{.package}}Repository) Update() error {
+	return nil
+}
 
 // Delete
-func Delete(id string) {}
+func (r *{{.package}}Repository) Delete(id string) error {
+	return nil
+}

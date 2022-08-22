@@ -8,6 +8,6 @@ type {{.name}}Controller struct {
 // New{{.name}}Controller ...
 func New{{.name}}Controller(service {{.name}}Service) *{{.name}}Controller {
 	return &{{.name}}Controller{
-		{{.package}}Controller: service,
+		{{.package}}Service: service,
 	}
 }
